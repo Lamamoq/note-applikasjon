@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Notater</title>
+  <style>
+    /* Font */
+
+    /* Style the navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+    }
+
+    /* Style the logo */
+    .navbar-logo {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Style the links */
+    .navbar-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar-links a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    .navbar-links a:hover {
+      background-color: #555;
+    }
+
+    /* Style the buttons */
+    .btn-primary {
+      background-color: #4caf50;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar-buttons button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .navbar-buttons button:hover {
+      transform: translateY(-2px);
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0 5px #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .delete-button {
+      background-color: #f44336;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+
+    .delete-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+      margin-bottom: 10px;
+    }
+
+    .card-content {
+      font-family: Arial, sans-serif;
+      border: none;
+      box-sizing: border-box;
+      height: 150px;
+      padding: 10px;
+      width: 100%;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .save-button {
+      background-color: #4caf50;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+
+    .save-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /*Dette er stilen til kortet*/
+
+    .note-card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .note-title {
+      font-size: 24px;
+      font-family: Arial, sans-serif;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .note-text {
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .note-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .edit-button,
+    .delete-button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .edit-button {
+      background-color: #5cb85c;
+      margin-right: 10px;
+    }
+
+    .delete-button {
+      background-color: #d9534f;
+    }
+
+    .edit-button:hover,
+    .delete-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <!--Nav meny-->
+  <nav class="navbar">
+    <div class="navbar-logo">Notater</div>
+    <div class="navbar-links">
+      <a href="/">Hjem</a>
+      <a href="#">Om</a>
+    </div>
+    <div class="navbar-buttons">
+      <a href="/signup"><button class="btn-primary">Meld deg på</button></a>
+      <a href="/login"><button id="loggpaa" class="btn-primary">Logg på</button></a>
+      <button id="loggav" class="btn-primary">Logg av</button>
+    </div>
+  </nav>
+  <br />
+
+  <!--Form for å skrive notater-->
+  <div class="card">
+    <div class="card-header">
+      <input id="notatTittel" type="text" class="card-title" placeholder="Tittel" />
+    </div>
+    <div class="card-body">
+      <textarea id="notatTekst" class="card-content" placeholder="Noter her"></textarea>
+    </div>
+    <div class="card-footer">
+      <button id="lagre" type="submit" class="save-button">Lagre</button>
+    </div>
+  </div>
+
+  <!--Notat kort
+    <div class="note-card">
+        <h2 class="note-title">Tittel</h2>
+        <p class="note-text">Her skal innholdet være</p>
+        <div class="note-actions">
+            <button class="edit-button">Rediger</button>
+            <button class="delete-button">Slett</button>
+        </div>
+    </div>-->
+
+  <h1>Mine notater</h1>
+  <div class="alleNotater"></div>
+
+  <!--JavaScript-->
+  <script>
+    async function postData(url = "", data = {}) {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response.headers.get("content-type"));
+      return await response.json();
+    }
+
+    // Henter brukerens opplysninger
+    let bruker = JSON.parse(localStorage.getItem("user"));
+
+    // Hvis brukeren har en mail kan brukeren se notatene
+if (bruker && bruker.epost) {
+  const notes = postData("/getnotes", { epost: bruker.epost });
+  // Når notatene er hentet
+  notes.then((result) => {
+    console.log("Notes", result.notes);
+    // Sorter notatene
+    const sortedNotes = result.notes.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+    result.notes.forEach((note) => {
+      let notatBlokk = `
+        <div class="note-card">
+          <h2 class="note-title">${note.notatTittel}</h2>
+          <p class="note-text">${note.notatTekst}</p>
+          <div class="note-actions">
+            <button class="delete-button" data-note-id="${note._id}">Slett</button>
+          </div>
+        </div>`;
+      let notatContainer = document.querySelector(".alleNotater");
+      notatContainer.innerHTML += notatBlokk;
+    });
+
+    // Slett notat
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const noteId = button.getAttribute('data-note-id');
+        fetch(`/notes/${noteId}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result.message);
+            // Slett kortet fra UI
+            const noteCard = button.closest('.note-card');
+            noteCard.parentNode.removeChild(noteCard);
+          })
+          .catch(error => console.error(error));
+      });
+    });
+  });
+} else {
+  alert("Logg på å for lage notater");
+}
+
+
+
+
+    // Når en trykker på "lagre" så vil dette skje
+    let lagre = document.getElementById("lagre");
+    lagre.addEventListener("click", async function () {
+      let notatTittel = document.getElementById("notatTittel").value;
+      let notatTekst = document.getElementById("notatTekst").value;
+      let epost = JSON.parse(localStorage.getItem("user"))?.epost;
+
+      // Sjekker om feltene inneholder data
+      if (notatTittel == "" || notatTekst == "") {
+        alert("Vennligst fyll alle felter");
+      } else {
+        console.log("Sending data:", { notatTittel, notatTekst, epost });
+        let res = await postData("/addnote", {
+          notatTittel,
+          notatTekst,
+          epost,
+        });
+        console.log(res);
+
+        if (res.message == "En ny notat opprettet") {
+          document.getElementById("notatTittel").value = "";
+          document.getElementById("notatTekst").value = "";
+          //Oppdaterer listen
+          location.reload();
+        }
+      }
+    });
+
+    // Logger brukeren av
+    loggav = document.getElementById("loggav");
+    loggav.addEventListener("click", function () {
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    });
+
+    // Sjekker hvis brukeren er logget på. Hvis ikke skjul logg på knappen
+    // check if the user is logged in
+    if (localStorage.getItem("user")) {
+      // hvis logg av knappen
+      document.getElementById("loggav").style.display = "block";
+    } else {
+      // skjul logg av knappen
+      document.getElementById("loggav").style.display = "none";
+    }
+
+    // Sjekker hvis brukeren er logget av. Hvis ikke, skjul logg av knappen
+    if (localStorage.getItem("user")) {
+      // skjul logg av knappen
+      document.getElementById("loggpaa").style.display = "none";
+    } else {
+      // vis logg av knappen
+      document.getElementById("loggpaa").style.display = "block";
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notater</title>
+    <style>
+        /* Style the navigation bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        /* Style the logo */
+        .navbar-logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Style the links */
+        .navbar-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        .navbar-links a:hover {
+            background-color: #555;
+        }
+
+        /* Style the buttons */
+        .btn-primary {
+            background-color: #4caf50;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-buttons button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        margin-left: 10px;
+        cursor: pointer;
+        float: right;
+
+      }
+
+        .navbar-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style the buttons */
+        .navbar-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-buttons button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+
+        }
+
+        .navbar-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* styling the form*/
+        .note-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .note-title {
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        label {
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            color: #666;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .edit-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background-color: #5cb85c;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <!--Nav meny-->
+    <nav class="navbar">
+        <div class="navbar-logo">Notater</div>
+        <div class="navbar-links">
+          <a href="/">Hjem</a>
+          <a href="#">Om</a>
+        </div>
+        <div class="navbar-buttons">
+          <a href="/signup"><button class="btn-primary">Meld deg på</button></a>
+          <a href="/login"><button id="loggpaa" class="btn-primary">Logg på</button></a>
+          <button id="loggav" class="btn-primary">Logg av</button>
+        </div>
+      </nav>
+      <br/>
+
+
+    <!--Opprett konto form-->
+    <div class="note-card">
+        <h2 class="note-title">Opprett konto</h2><br>
+        <div>
+            <label for="email">Epost</label>
+            <input type="email" id="epost" >
+        </div>
+        <div>
+            <label for="password">Passord</label>
+            <input type="password" id="passord">
+        </div>
+        <button id="opprett" type="submit" class="edit-button">Opprett konto</button>
+    </div>
+
+
+
+    <script>
+        async function postData(url = "", data = {}) {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            console.log(response.headers.get("content-type"));
+            return await response.json();
+        }
+
+        // Sende info om at kontoen er opprettet
+        let opprett = document.getElementById("opprett");
+        opprett.addEventListener("click", async function () {
+            let epost = document.getElementById("epost").value;
+            let passord = document.getElementById("passord").value;
+
+            // Validate email input
+            let emailRegex = /\S+@\S+\.\S+/;
+            if (!emailRegex.test(epost)) {
+                alert("Vennligst skriv inn en gyldig epostadresse");
+                return;
+            }
+
+            console.log("Sending data:", { epost, passord });
+            let res = await postData("/signup", { epost, passord });
+            console.log(res);
+            if (res.message == "Registreringen var vellykket") {
+                alert("Brukeren er laget. Du kan logge på nå!");
+                 window.location.href = "/login";
+            }
+        })
+
+
+        // Sjekker hvis brukeren er logget på. Hvis ikke skjul logg på knappen
+      // check if the user is logged in
+      if (localStorage.getItem("user")) {
+        // hvis logg av knappen
+        document.getElementById("loggav").style.display = "block";
+      } else {
+        // skjul logg av knappen
+        document.getElementById("loggav").style.display = "none";
+      }
+
+      // Sjekker hvis brukeren er logget av. Hvis ikke, skjul logg av knappen
+      if (localStorage.getItem("user")) {
+        // skjul logg av knappen
+        document.getElementById("loggpaa").style.display = "none";
+      } else {
+        // vis logg av knappen
+        document.getElementById("loggpaa").style.display = "block";
+      }
+    </script>
+
+
+
+</body>
+
+</html>
