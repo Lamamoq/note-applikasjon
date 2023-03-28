@@ -26,17 +26,17 @@ kobleTilDatabase();
 
 // Navigasjon to html sider
 app.get("/", (req, res) => {
-  res.sendFile("app/pages/index.html", { root: __dirname }); 
+  res.sendFile("pages/index.html", { root: __dirname }); 
   //res.sendStatus(200)
   //root: __dirname brukes for aa fortelle meg denne absolutte banen til katalogen som inneholder filen som kjøres
 });
 
 app.get("/login", (req, res) => {
-  res.sendFile("app/pages/login.html", { root: __dirname });
+  res.sendFile("pages/login.html", { root: __dirname });
 });
 
 app.get("/signup", (req, res) => {
-  res.sendFile("app/pages/signup.html", { root: __dirname });
+  res.sendFile("pages/signup.html", { root: __dirname });
 });
 
 // For å hente brukerens notater - API
