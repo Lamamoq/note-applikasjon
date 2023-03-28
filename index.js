@@ -26,13 +26,7 @@ kobleTilDatabase();
 
 app.use(express.static('Pages'));
 
-app.get("/login", (req, res) => {
-  res.sendFile("pages/login.html", { root: __dirname });
-});
 
-app.get("/signup", (req, res) => {
-  res.sendFile("pages/signup.html", { root: __dirname });
-});
 
 // For å hente brukerens notater - API
 app.post("/getnotes", async (req, res) => {
