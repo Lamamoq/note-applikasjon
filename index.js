@@ -27,6 +27,7 @@ kobleTilDatabase();
 // Navigasjon to html sider
 app.get("/", (req, res) => {
   res.sendFile("pages/index.html", { root: __dirname }); 
+  res.sendStatus(200)
   //root: __dirname brukes for aa fortelle meg denne absolutte banen til katalogen som inneholder filen som kjøres
 });
 
